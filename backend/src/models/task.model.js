@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 
 const TaskSchema = new mongoose.Schema({
-    tittle : {
+    title : {
         type : String,
         required : true
     },
@@ -12,8 +12,9 @@ const TaskSchema = new mongoose.Schema({
     isCompleted : {
         type : Boolean,
         default : false
-    }
+    },
 
-})  
+
+},{timestamps : true})  
 
 export default mongoose.model("Task", TaskSchema)
