@@ -14,13 +14,33 @@ export const addTask = async (req , res) =>{
     }
 
 }
+export const getById = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const task = await taskModel.findById(id);  
+
+        if (!task) {
+            return res.status(404).json({ message: "Task not found" });
+        }
+
+        res.status(200).json({ task });
+    } catch (error) {
+        // Respond with a proper error message
+        res.status(500).json({
+            message: error.message,
+            clg: "error in getById",
+        });
+    }
+};
+
 export const updateTask = async (req , res) => {
     try {
         const {id} = req.params;
         const {title , description} = req.body;
         const task = await taskModel.findByIdAndUpdate(id , {title , description} , {new : true});
         
-        res.status(201).json({task  , msg : "task"});
+        res.status(201).json({task});
     } catch (error) {
         console.log('Error in update task:', error); // log the error to the console
         res.status(500).json({
@@ -43,7 +63,7 @@ export const deleteTask = async (req , res) =>{
 }
 export const getTask = async (req , res) =>{
     try {
-        const task = await taskModel.find();
+        const task = await taskModel.find().sort({createdAt : -1});
         res.status(200).json({task});
         
     } catch (error) {
